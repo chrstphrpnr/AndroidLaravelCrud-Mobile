@@ -86,6 +86,50 @@ public void setData(List<Student> data) {
 }
 ```
 
+### Create another package inside the main folder and name it "remote"
+### Create a java class interface named "Student"Service and declare this
+
+```
+@GET("api/students/")
+Call<Student> getStudents();
+
+@POST("api/students/")
+Call<Student> addStudent(@Body Student student);
+
+@PUT("api/students/{id}")
+Call<Student> updateStudent(@Path("id") int id, @Body Student student);
+
+@DELETE("api/students/{id}")
+Call<Student> deleteStudent(@Path("id") int id);
+```
+
+### Create another java class inside remote package named "RetrofitClient" this is the connection for the retrofitclient that used to connect to database
+```
+private static Retrofit retrofit;
+
+public static Retrofit getClient(String url){
+        if (retrofit == null){
+            retrofit = new Retrofit.Builder().baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create()).build();
+        }
+        return  retrofit;
+}
+```
+
+### Create another java class inside remote package named APIUtils
+```
+private APIUtils(){
+
+}
+
+public static final String API_URL = "http://000.000.0000.0000:8080";  //ipconfig in cmd to get your ip address and put it on API_URL
+
+public static StudentService getUserService() {
+    return RetrofitClient.getClient(API_URL).create(StudentService.class);
+}
+```
+
+
 
 
 
